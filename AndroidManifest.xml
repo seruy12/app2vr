@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.app360.app360">
+
+    <!-- Разрешения (без дубликатов) -->
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- Для Android 13+ -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION" />
+
+    <uses-feature
+        android:glEsVersion="0x20000"
+        android:required="true" />
+
+    <application
+        android:theme="@style/AppTheme"
+        android:label="@string/app_name"
+        android:icon="@mipmap/ic_launcher"
+        android:allowBackup="true">
+
+        <meta-data
+            android:name="xposedmodule"
+            android:value="true" />
+        <meta-data
+            android:name="xposedminversion"
+            android:value="2.1*" />
+        <meta-data
+            android:name="xposeddescription"
+            android:value="@string/app_description" />
+
+        <!-- SelectorActivity (LAUNCHER) -->
+        <activity
+            android:name="com.nitro888.nitroaction360.SelectorActivity"
+            android:screenOrientation="portrait"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- MainActivity -->
+        <activity
+            android:name="com.nitro888.nitroaction360.MainActivity"
+            android:screenOrientation="landscape"
+            android:exported="false" />
+
+        <!-- ScreenCapture MainActivity -->
+        <activity
+            android:name="com.hmct.screencapture.MainActivity"
+            android:exported="false" />
+
+        <!-- Вспомогательные активности -->
+        <activity
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+            android:name="com.nibiru.lib.controller.VRTipActivity"
+            android:exported="false" />
+
+        <activity
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+            android:name="com.nibiru.lib.controller.InfoActivity"
+            android:configChanges="screenSize|screenLayout|orientation"
+            android:exported="false" />
+
+        <!-- Сервисы -->
+        <service
+            android:name="com.nibiru.lib.utils.NibiruControllerService"
+            android:process=":controller"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.nibiru.controller.service" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="com.hmct.screencapture.FloatingWindowService"
+            android:foregroundServiceType="mediaProjection"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.hmct.vrmode.off" />
+                <action android:name="com.hmct.vrmode.on" />
+            </intent-filter>
+        </service>
+
+    </application>
+
+</manifest>

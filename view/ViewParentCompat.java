@@ -1,0 +1,55 @@
+package android.support.v4.view;
+
+import android.os.Build;
+import android.view.View;
+import android.view.ViewParent;
+import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityManager;
+
+/* JADX INFO: loaded from: classes.dex */
+public class ViewParentCompat {
+    static final ViewParentCompatImpl IMPL;
+
+    class ViewParentCompatICSImpl extends ViewParentCompatStubImpl {
+        ViewParentCompatICSImpl() {
+        }
+
+        @Override // android.support.v4.view.ViewParentCompat.ViewParentCompatStubImpl, android.support.v4.view.ViewParentCompat.ViewParentCompatImpl
+        public boolean requestSendAccessibilityEvent(ViewParent viewParent, View view, AccessibilityEvent accessibilityEvent) {
+            return ViewParentCompatICS.requestSendAccessibilityEvent(viewParent, view, accessibilityEvent);
+        }
+    }
+
+    interface ViewParentCompatImpl {
+        boolean requestSendAccessibilityEvent(ViewParent viewParent, View view, AccessibilityEvent accessibilityEvent);
+    }
+
+    class ViewParentCompatStubImpl implements ViewParentCompatImpl {
+        ViewParentCompatStubImpl() {
+        }
+
+        @Override // android.support.v4.view.ViewParentCompat.ViewParentCompatImpl
+        public boolean requestSendAccessibilityEvent(ViewParent viewParent, View view, AccessibilityEvent accessibilityEvent) {
+            if (view == null) {
+                return false;
+            }
+            ((AccessibilityManager) view.getContext().getSystemService("accessibility")).sendAccessibilityEvent(accessibilityEvent);
+            return true;
+        }
+    }
+
+    static {
+        if (Build.VERSION.SDK_INT >= 14) {
+            IMPL = new ViewParentCompatICSImpl();
+        } else {
+            IMPL = new ViewParentCompatStubImpl();
+        }
+    }
+
+    private ViewParentCompat() {
+    }
+
+    public static boolean requestSendAccessibilityEvent(ViewParent viewParent, View view, AccessibilityEvent accessibilityEvent) {
+        return IMPL.requestSendAccessibilityEvent(viewParent, view, accessibilityEvent);
+    }
+}

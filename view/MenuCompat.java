@@ -1,0 +1,10 @@
+package android.support.v4.view;
+
+import android.view.MenuItem;
+
+/* JADX INFO: loaded from: classes.dex */
+public class MenuCompat {
+    public static void setShowAsAction(MenuItem menuItem, int i) {
+        MenuItemCompat.setShowAsAction(menuItem, i);
+    }
+}
